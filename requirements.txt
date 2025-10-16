@@ -5,3 +5,8 @@ langchain-ollama
 ollama
 uvicorn
 fastapi
+huggingface-hub
+sentence-transfromers
+pymongo
+python-dotenv
+faiss-cpu
