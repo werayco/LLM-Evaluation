@@ -1,5 +1,7 @@
-EvidentlyAI
+evidently
 nltk
 pandas
 langchain-ollama
 ollama
+uvicorn
+fastapi
