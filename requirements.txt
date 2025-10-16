@@ -1,0 +1,5 @@
+EvidentlyAI
+nltk
+pandas
+langchain-ollama
+ollama
