@@ -8,7 +8,7 @@ class memory:
         self.conString: str = os.getenv("MONGO")
         self.databaseName: str = "memory"
         self.collection_name: str = "agentmemory"
-
+    
     def getMemory(self):
         history = MongoDBChatMessageHistory(
             connection_string=self.conString,

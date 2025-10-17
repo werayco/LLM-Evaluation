@@ -14,13 +14,13 @@ def vectorstorecreator(filepath, db_path="faiss_db"):
     faiss_vector_database = FAISS.from_documents(document_chunks, embeddings)
     faiss_vector_database.save_local(db_path)
 
-def load_faiss_vector_store(query, db_directory_path=".\faiss_db"):
+def load_faiss_vector_store(query, db_directory_path=r".\RAG\faiss_db"):
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={'device': "cpu"})
     vector_store = FAISS.load_local(db_directory_path, embeddings, allow_dangerous_deserialization=True)
     retriever = vector_store.as_retriever()
     response = retriever.get_relevant_documents(query)
-    print(f"Relevant document chunks:\n{response}\n")
-    return response
+    context = "\n\n".join([doc.page_content for doc in response])
+    return context
 
 # vectorstorecreator(r"./sample.pdf") # un this once to create the vector store
 

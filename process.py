@@ -3,14 +3,17 @@ import datetime
 from langchain_groq import ChatGroq
 from agentictools import memory, tools
 from langchain.agents import initialize_agent, AgentType
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 
 def run_agent(user_input, sessionID):
-    obj = memory(sessionID)
+    obj = memory.memory(sessionID)
     agent_memory = obj.getMemory()
     agent_tools = tools.agentools().toolsMerged()
 
-    groq_chat = ChatGroq(model="openai/gpt-oss-20b", temperature=0)
+    groq_chat = ChatGroq(model="openai/gpt-oss-20b", temperature=0, api_key=os.getenv("GROQ"))
 
     agent = initialize_agent(
         agent_tools,
@@ -24,4 +27,4 @@ def run_agent(user_input, sessionID):
     return response
 
 
-print(run_agent("who is ray?", 89))
+# print(run_agent("who is ryan to ray?", 89))

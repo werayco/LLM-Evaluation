@@ -4,6 +4,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from RAG.process import load_faiss_vector_store
 from langchain.tools import Tool
+from numo import Numo
 
 class agentools:
     @staticmethod
@@ -15,20 +16,19 @@ class agentools:
         print(f"Relevant document chunks:\n{response}\n")
         return response
     
-    @staticmethod
-    def football():
-        pass
 
     @staticmethod
-    def calendar():
-        pass
+    def translator(query):
+        numo = Numo()
+        return numo.calculate(query)
 
     @staticmethod
-    def calculator():
-        pass
+    def calculator(query):
+        numo = Numo()
+        return numo.calculate(query)
 
     @staticmethod
-    def toolsMerged(self):
+    def toolsMerged():
         toolsMerged = [
             Tool(
                 name="RAG_Document_Search",
@@ -36,19 +36,14 @@ class agentools:
                 func=load_faiss_vector_store,
             ),
             Tool(
-                name="",
-                description="",
-                func="",
+                name="translator tool",
+                description="use this anytime you need to translate text from one language to another",
+                func=agentools.translator,
             ),
             Tool(
-                name="Football_Live_Scores",
-                description="",
-                func="",
-            ),
-            Tool(
-                name="",
-                description="",
-                func="",
-            ),
+                name="calculator tool",
+                description="use this anytime you need to do a mathematical calculation",
+                func=agentools.calculator,
+            )
         ]
         return toolsMerged
