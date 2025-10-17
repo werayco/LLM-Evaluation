@@ -10,3 +10,4 @@ sentence-transfromers
 pymongo
 python-dotenv
 faiss-cpu
+black

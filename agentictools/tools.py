@@ -2,6 +2,8 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from RAG.process import load_faiss_vector_store
+from langchain.tools import Tool
 
 class agentools:
     @staticmethod
@@ -20,9 +22,33 @@ class agentools:
     @staticmethod
     def calendar():
         pass
+
     @staticmethod
     def calculator():
         pass
+
     @staticmethod
-    def loadtools():
-        pass
+    def toolsMerged(self):
+        toolsMerged = [
+            Tool(
+                name="RAG_Document_Search",
+                description="Answer questions about someone named Ray",
+                func=load_faiss_vector_store,
+            ),
+            Tool(
+                name="",
+                description="",
+                func="",
+            ),
+            Tool(
+                name="Football_Live_Scores",
+                description="",
+                func="",
+            ),
+            Tool(
+                name="",
+                description="",
+                func="",
+            ),
+        ]
+        return toolsMerged
