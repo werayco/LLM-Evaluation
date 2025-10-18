@@ -8,7 +8,7 @@ from numo import Numo
 
 class agentools:
     @staticmethod
-    def ragtool(query, db_directory_path="faiss_db"):
+    def ragtool(query, db_directory_path=r"RAG/faiss_db"):
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={'device': "cpu"})
         vector_store = FAISS.load_local(db_directory_path, embeddings, allow_dangerous_deserialization=True)
         retriever = vector_store.as_retriever()

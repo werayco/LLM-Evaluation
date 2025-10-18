@@ -2,7 +2,7 @@ from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 from langchain.memory import ConversationBufferMemory
 import os
 
-class memory:
+class Memory:
     def __init__(self, sessionID):
         self.sessionID = sessionID
         self.conString: str = os.getenv("MONGO")

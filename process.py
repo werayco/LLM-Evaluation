@@ -1,30 +1,31 @@
 import time
 import datetime
-from langchain_groq import ChatGroq
+from langchain_ollama import OllamaLLM
 from agentictools import memory, tools
 from langchain.agents import initialize_agent, AgentType
 from dotenv import load_dotenv
 import os
+import warnings
+warnings.filterwarnings("ignore")
+from RAG.process import vectorstorecreator
 load_dotenv()
 
-
 def run_agent(user_input, sessionID):
-    obj = memory.memory(sessionID)
-    agent_memory = obj.getMemory()
-    agent_tools = tools.agentools().toolsMerged()
+    agent_memory = memory.Memory(sessionID).getMemory()
+    agent_tools = tools.agentools.toolsMerged()
 
-    groq_chat = ChatGroq(model="openai/gpt-oss-20b", temperature=0, api_key=os.getenv("GROQ"))
+    groq_chat = OllamaLLM(model="gemma3:1b", temperature=0)
 
     agent = initialize_agent(
-        agent_tools,
-        groq_chat,
-        agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
-        memory=agent_memory,
-        verbose=True,
-    )
+            agent_tools,
+            groq_chat,
+            agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, # or CHAT_OPENAI_FUNCTIONS if needed
+            memory=agent_memory,
+            verbose=True,
+        )
 
     response = agent.run(input=user_input)
     return response
 
-
-# print(run_agent("who is ryan to ray?", 89))
+    # vectorstorecreator(r"./sample.pdf") # run this once to create the vector store
+print(run_agent(user_input="how are you?", sessionID=89))
