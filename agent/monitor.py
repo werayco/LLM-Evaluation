@@ -4,8 +4,9 @@ from evidently.descriptors import (
     DeclineLLMEval,
     FaithfulnessLLMEval,
     BERTScore,
-    SentenceCount,
+    SentenceCount, CorrectnessLLMEval , IncludesWords
 )
+# CorrectnessLLMEval is basically using an AI Judge to compare the answers and the model's answer using OPENAI's API
 from agent.process import run_agent
 import pandas as pd
 import warnings
@@ -20,6 +21,6 @@ dataframe["model_output"] = ModelResponse
 
 datadef = DataDefinition(text_columns=["questions", "answers", "model_output"])
 evidentlyAIDataframe = Dataset.from_pandas(dataframe, datadef) # this wraps our dataset to a evidently dataset
-evidentlyAIDataframe.add_descriptors(descriptors=[BERTScore(columns=["model_output", "answers"], alias="BertScore")])
+evidentlyAIDataframe.add_descriptors(descriptors=[IncludesWords(column_name="model_output", words_list=["Hello", "good day"], alias="include words"),BERTScore(columns=["model_output", "answers"], alias="BertScore")])
 newdf = evidentlyAIDataframe.as_dataframe().to_csv("./report.csv")
 print(newdf)

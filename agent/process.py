@@ -1,6 +1,3 @@
-import time
-import datetime
-from langchain_ollama import OllamaLLM
 from agentictools import memory, tools
 from langchain.agents import initialize_agent, AgentType
 from dotenv import load_dotenv
@@ -8,9 +5,13 @@ import os
 import warnings
 from RAG.process import vectorstorecreator
 from langchain_google_genai import ChatGoogleGenerativeAI
+from pymongo import MongoClient
+
 warnings.filterwarnings("ignore")
 
-
+client = MongoClient(os.getenv("MONGO"))
+db = client["responses"]
+collection = db["mdresponses"]
 
 load_dotenv()
 
@@ -48,7 +49,8 @@ def run_agent(user_input, usersname, sessionID=89):
     )
 
     response = agent.run(input=user_input)
+    collection.insert_one({"user's_query":user_input, "model's_response":response}) # using the response for monitoring
     return response
 
-    # vectorstorecreator(r"./sample.pdf") # run this once to create the vector store
-print(run_agent(user_input="Thank you", usersname="tobi", sessionID=8009))
+ # vectorstorecreator(r"./sample.pdf") # run this once to create the vector store
+print(run_agent(user_input="what says the time?", usersname="tobi", sessionID=8009))
