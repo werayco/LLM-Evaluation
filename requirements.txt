@@ -6,8 +6,9 @@ ollama
 uvicorn
 fastapi
 huggingface-hub
-sentence-transfromers
+sentence-transformers
 pymongo
 python-dotenv
 faiss-cpu
+langchain-google-genai
 black

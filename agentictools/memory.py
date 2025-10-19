@@ -2,13 +2,14 @@ from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 from langchain.memory import ConversationBufferMemory
 import os
 
+
 class Memory:
     def __init__(self, sessionID):
         self.sessionID = sessionID
         self.conString: str = os.getenv("MONGO")
         self.databaseName: str = "memory"
         self.collection_name: str = "agentmemory"
-    
+
     def getMemory(self):
         history = MongoDBChatMessageHistory(
             connection_string=self.conString,
@@ -23,5 +24,3 @@ class Memory:
             input_key="input",
         )
         return memory
-
- 
