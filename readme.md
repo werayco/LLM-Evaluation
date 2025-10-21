@@ -45,7 +45,7 @@ GET http://localhost:8000/get-uuid?username=xxxx
 
 `9.` Chat with with Agent
 ```console
-POST http://localhost:/api/chat
+POST http://localhost:8001/api/chat
 ```
 ```json
 {
