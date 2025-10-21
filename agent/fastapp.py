@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from agent.utils import hashgenerator
 from agent.process import run_agent
 
-service = FastAPI(
+app = FastAPI(
     title="LLM Order Booking API",
     version="1.0.0"
 )
@@ -14,16 +14,16 @@ class Payload(BaseModel):
     query: str
     hashed_data: str
 
-@service.get("/health")
+@app.get("/health")
 async def health_check():
     return JSONResponse(content={"message": "health check route is active!"}, status_code=200)
 
-@service.get("/get-uuid")
+@app.get("/get-uuid")
 async def get_uuid(username: str):
     salt, hashed_value = hashgenerator(username)
     return {"username": username, "salt": salt, "hashed_data": hashed_value}
 
-@service.post("/api/chat")
+@app.post("/api/chat")
 async def chat_endpoint(req: Payload):
     try:
         model_response = run_agent(
