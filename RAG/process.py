@@ -33,11 +33,11 @@ def load_faiss_vector_store(query, db_directory_path=vectordbpath):
     )
     retriever = vector_store.as_retriever()
     response = retriever.get_relevant_documents(query)
-    print(f"RAG Observation (Documents Found): {response}")  # <--- ADD THIS LINE
+    print(f"RAG Observation (Documents Found): {response}")  
     context = "\n\n".join([doc.page_content for doc in response])
     return context
 
 
-# vectorstorecreator(r"./sample.pdf") # un this once to create the vector store
+# vectorstorecreator(r"./sample.pdf") # uncomment this create the vector store
 
 # print(load_faiss_vector_store("ray and ryan?"))

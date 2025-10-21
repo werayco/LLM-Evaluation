@@ -46,7 +46,7 @@ class agentools:
     @staticmethod
     def makeOrder(data: list):
         user_id, order_id, quantity = data[0], data[1], data[2]
-        url = "http://localhost:8000/api/v1/book"
+        url = "http://orderservice:8000/api/v1/book"
         response = requests.post(
             url=url,
             json={"user_id": user_id, "order_id": order_id, "quantity": quantity},

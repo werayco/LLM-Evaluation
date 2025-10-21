@@ -47,10 +47,6 @@ def run_agent(user_input, usersname, sessionID=89):
             )
         },
     )
-
     response = agent.run(input=user_input)
     collection.insert_one({"user's_query":user_input, "model's_response":response}) # using the response for monitoring
     return response
-
- # vectorstorecreator(r"./sample.pdf") # run this once to create the vector store
-print(run_agent(user_input="what says the time?", usersname="tobi", sessionID=8009))

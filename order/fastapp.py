@@ -3,9 +3,8 @@ from fastapi import Request, FastAPI
 from pydantic import BaseModel
 
 service = FastAPI(
-    description="this is an api the llm uses to set appointments", version="1.0.0"
+    description="this is an api the llm uses to book orders", version="1.0.0"
 )
-
 
 class responsemodel(BaseModel):
     status_code: int
@@ -20,7 +19,7 @@ class requestmodel(BaseModel):
 
 @service.get("/", response_model=responsemodel)
 async def health():
-    return JSONResponse(content="succesful", status_code=200)
+    return JSONResponse(content="health check route is active!", status_code=200)
 
 
 @service.post("/api/v1/book", response_model=responsemodel)

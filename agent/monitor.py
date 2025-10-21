@@ -4,23 +4,45 @@ from evidently.descriptors import (
     DeclineLLMEval,
     FaithfulnessLLMEval,
     BERTScore,
-    SentenceCount, CorrectnessLLMEval , IncludesWords
+    SentenceCount, 
+    CorrectnessLLMEval, 
+    IncludesWords, 
+    SemanticSimilarity, 
+    Sentiment
 )
-# CorrectnessLLMEval is basically using an AI Judge to compare the answers and the model's answer using OPENAI's API
 from agent.process import run_agent
 import pandas as pd
 import warnings
+from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
 warnings.filterwarnings("ignore")
-import time
-import logging
+load_dotenv()
 
-dataframe = pd.read_csv(r"./evals.csv")
-quest = list(dataframe["questions"].to_list())
-ModelResponse = [run_agent(str(question), int(time.time())) for question in quest]
-dataframe["model_output"] = ModelResponse
+class monitorllm:
+    "this class encapsulates the monitoring of the llm agent"
+    def __init__(self):
+        self.client = MongoClient(os.getenv("MONGO"))
+        self.db = self.client["responses"]
+        self.collection = self.db["mdresponses"]
 
-datadef = DataDefinition(text_columns=["questions", "answers", "model_output"])
-evidentlyAIDataframe = Dataset.from_pandas(dataframe, datadef) # this wraps our dataset to a evidently dataset
-evidentlyAIDataframe.add_descriptors(descriptors=[IncludesWords(column_name="model_output", words_list=["Hello", "good day"], alias="include words"),BERTScore(columns=["model_output", "answers"], alias="BertScore")])
-newdf = evidentlyAIDataframe.as_dataframe().to_csv("./report.csv")
-print(newdf)
+    def analysisData(self) -> pd.DataFrame:
+        "retrieves the model's reponse and the user's query from my db"
+        data = list(self.collection.find({}, {"_id": 0}))
+        return pd.DataFrame(data)
+    
+    def responseAnalysis(self):
+        datadef = DataDefinition(text_columns=["user's_query", "model's_response"])
+        dataframe = self.analysisData()
+        evidentlyAIDataframe = Dataset.from_pandas(dataframe, datadef)
+        evidentlyAIDataframe.add_descriptors(descriptors=[
+            IncludesWords(column_name="model's_response", words_list=["Hello", "good day"], alias="include words"),
+            BERTScore(columns=["user's_query", "model's_response"], alias="BertScore"),
+            SemanticSimilarity(columns=["user's_query", "model's_response"], alias="hallucination")
+        ])
+        evidentlyAIDataframe.as_dataframe().to_csv("./report.csv", index=False)
+        print(dataframe)
+
+# obj = monitorllm()
+# obj.responseAnalysis()
