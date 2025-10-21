@@ -1,4 +1,4 @@
-# How to run this project
+# How to run this Agentic RAG project
 1. Clone this repository
 ```console
 git clone https://github.com/werayco/LLM-Evaluation.git
@@ -12,29 +12,36 @@ cd LLM-Evaluation
 ```console
 docker network create chatai
 ```
+4. Add your environmental variables to your .env file
+```console
+  GOOGLE_API_KEY = "get your google api key from https://aistudio.google.com/app/api-keys"
 
-4. Start the Order Docker Service (Make sure you have Docker Installed)
+  HUGGINGFACE_API = "get your huggingface api from https://huggingface.co"
+
+  MONGODB_URL = "your mongodb url"
+```
+5. Start the Order Docker Service (Make sure you have Docker Installed)
 ```console
 
 docker-compose -f app.docker-compose.yml up -d
 ```
 
-5. Scale the service if you need
+6. Scale the service if you need
 ```console
 docker-compose -f app.docker-compose.yml up --scale gentlepanther=3
 ```
-6. Check the logs of the service
+7. Check the logs of the service
 ```console
 docker logs orderservice --since=10m
 ```
 
-7. Create an hash value to serve as your UUID (for tracking your conversation)
+8. Create an hash value to serve as your UUID (for tracking your conversation)
 
 ```console
 GET http://localhost:8000/get-uuid?username=xxxx
 ```
 
-8. Chat with with Agent
+9. Chat with with Agent
 ```console
 POST http://localhost:/api/chat
 ```
