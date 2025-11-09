@@ -10,7 +10,6 @@ from evidently.descriptors import (
     SemanticSimilarity, 
     Sentiment
 )
-from agent.process import run_agent
 import pandas as pd
 import warnings
 from pymongo import MongoClient

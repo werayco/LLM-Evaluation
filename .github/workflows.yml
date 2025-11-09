@@ -1,0 +1,29 @@
+name: practice-deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pre-checkout
+        id: checkout-practice
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{secrets.AWS_ARN_ROLE}}
+          aws-region: us-east-1
+          audience: sts.amazonaws.com
+
+      - name: Test AWS Credential
+        run: aws sts get-caller-identity
+
