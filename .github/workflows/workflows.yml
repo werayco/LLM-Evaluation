@@ -31,9 +31,9 @@ jobs:
         run: |
           docker build -t orderservice:latest -f order/order.dockerfile ./order
           docker tag orderservice:latest ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/rayco-llm:latest
-          docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/orderservice:latest
+          docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/rayco-llm:latest
 
           docker build -t talktoai:latest -f agent/agent.dockerfile ./agent
           docker tag talktoai:latest ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/rayco-llm:latest
-          docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/talktoai:latest
+          docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com/rayco-llm:latest
 
